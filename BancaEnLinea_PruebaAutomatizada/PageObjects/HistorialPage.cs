@@ -12,7 +12,7 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
         private By desdeInput = By.Name("desde");
         private By hastaInput = By.Name("hasta");
         private By tipoSelect = By.Name("tipo");
-        private By filtrarButton = By.CssSelector("button[type='submit']");
+        private By filtrarButton = By.CssSelector("button.btn-primary");
         private By exportButton = By.CssSelector("a[href='/Historial/Export']");
         private By tableRows = By.CssSelector("tbody tr");
 
@@ -33,6 +33,7 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
 
         public void ClickFiltrar()
         {
+            wait.Until(d => d.FindElement(filtrarButton));
             driver.FindElement(filtrarButton).Click(); // Hacer clic en el botón Filtrar
         }
 
@@ -45,9 +46,14 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
         {
             try
             {
-                // Esperar a que las filas de la tabla estén presentes
-                wait.Until(d => d.FindElements(tableRows).Count > 0);
-                return driver.FindElements(tableRows).Count;
+                // Esperar un poco para que cargue la tabla
+                Thread.Sleep(1000);
+
+                // Intentar encontrar filas
+                var rows = driver.FindElements(tableRows);
+
+                // Si no hay filas, retornar 0 (no es un error)
+                return rows.Count;
             }
             catch
             {
