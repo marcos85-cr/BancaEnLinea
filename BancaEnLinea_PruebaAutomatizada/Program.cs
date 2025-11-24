@@ -6,8 +6,61 @@ namespace BancaEnLinea_PruebaAutomatizada
     {
         static void Main(string[] args)
         {
-            // Encabezado del sistema de pruebas
+            // Verificación inicial solo una vez
             Console.Clear();
+            MostrarEncabezado();
+
+            if (!VerificarAplicacionCorriendo())
+            {
+                return;
+            }
+
+            // Ciclo principal del menú
+            bool continuar = true;
+            while (continuar)
+            {
+                MostrarMenu();
+
+                Console.Write("Seleccione una opción: ");
+                var opcion = Console.ReadLine();
+
+                Console.WriteLine("\n════════════════════════════════════════════════════════════");
+                Console.WriteLine();
+
+                var horaInicio = DateTime.Now;
+
+                // Ejecutar la prueba seleccionada
+                EjecutarOpcion(opcion);
+
+                var horaFin = DateTime.Now;
+                var duracion = horaFin - horaInicio;
+
+                // Resumen de tiempo
+                Console.WriteLine("\n════════════════════════════════════════════════════════════");
+                Console.WriteLine($"  Duración: {duracion.TotalSeconds:F2} segundos");
+                Console.WriteLine("════════════════════════════════════════════════════════════");
+                Console.WriteLine("\n Las capturas se guardaron en: Screenshots\\");
+
+                // Preguntar si desea continuar
+                Console.WriteLine("\n¿Desea ejecutar otra prueba? (S/N): ");
+                var respuesta = Console.ReadLine()?.ToUpper();
+
+                if (respuesta != "S")
+                {
+                    continuar = false;
+                    Console.WriteLine("\n ¡Hasta luego!");
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("════════════════════════════════════════════════════════════\n");
+                }
+            }
+        }
+
+        // Encabezado del proyecto
+        static void MostrarEncabezado()
+        {
             Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
             Console.WriteLine("║                                                            ║");
             Console.WriteLine("║    SISTEMA DE PRUEBAS AUTOMATIZADAS - BANCA EN LÍNEA       ║");
@@ -16,11 +69,15 @@ namespace BancaEnLinea_PruebaAutomatizada
             Console.WriteLine();
             Console.WriteLine("Universidad Internacional de las Américas");
             Console.WriteLine("Curso: Verificación y Validación de Software");
-            Console.WriteLine();
+            Console.WriteLine("Grupo 6: Valeria, Hans y Marcos"); 
             Console.WriteLine("════════════════════════════════════════════════════════════");
             Console.WriteLine();
+        }
 
-            // Verificar requisitos previos
+        // Verificar si la aplicación está corriendo
+        static bool VerificarAplicacionCorriendo()
+        {
+            // Instrucciones para el usuario
             Console.WriteLine("  REQUISITOS PREVIOS:");
             Console.WriteLine("   1. Chrome instalado");
             Console.WriteLine("   2. Aplicación BancaEnLinea corriendo");
@@ -28,7 +85,6 @@ namespace BancaEnLinea_PruebaAutomatizada
             Console.WriteLine();
             Console.Write("¿Está la aplicación corriendo? (S/N): ");
 
-            // Verificar si la aplicación está corriendo
             var respuesta = Console.ReadLine()?.ToUpper();
             if (respuesta != "S")
             {
@@ -38,10 +94,15 @@ namespace BancaEnLinea_PruebaAutomatizada
                 Console.WriteLine("   dotnet run");
                 Console.WriteLine("\nPresione cualquier tecla para salir...");
                 Console.ReadKey();
-                return;
+                return false;
             }
 
-            // Menú de selección de prueba
+            return true;
+        }
+
+        // Mostrar el menú de opciones disponibles
+        static void MostrarMenu()
+        {
             Console.WriteLine("\n════════════════════════════════════════════════════════════");
             Console.WriteLine("  MENÚ DE PRUEBAS");
             Console.WriteLine("════════════════════════════════════════════════════════════");
@@ -59,16 +120,11 @@ namespace BancaEnLinea_PruebaAutomatizada
             Console.WriteLine("  11. EJECUTAR TODAS LAS PRUEBAS");
             Console.WriteLine("  0.  Salir");
             Console.WriteLine();
-            Console.Write("Seleccione una opción: ");
+        }
 
-            var opcion = Console.ReadLine();
-
-            Console.WriteLine("\n════════════════════════════════════════════════════════════");
-            Console.WriteLine();
-
-            var horaInicio = DateTime.Now;
-
-            // Ejecución de la prueba seleccionada
+        // Ejecutar la prueba seleccionada
+        static void EjecutarOpcion(string? opcion)
+        {
             switch (opcion)
             {
                 case "1":
@@ -106,25 +162,15 @@ namespace BancaEnLinea_PruebaAutomatizada
                     break;
                 case "0":
                     Console.WriteLine("👋 ¡Hasta luego!");
-                    return;
+                    Environment.Exit(0);
+                    break;
                 default:
                     Console.WriteLine("❌ Opción inválida");
                     break;
             }
-
-            // Cálculo de duración total
-            var horaFin = DateTime.Now;
-            var duracion = horaFin - horaInicio;
-
-            // Resumen de duración total
-            Console.WriteLine("\n════════════════════════════════════════════════════════════");
-            Console.WriteLine($"  Duración total: {duracion.TotalSeconds:F2} segundos");
-            Console.WriteLine("════════════════════════════════════════════════════════════");
-            Console.WriteLine("\n Las capturas de pantalla se guardaron en la carpeta Screenshots");
-            Console.WriteLine("\nPresione cualquier tecla para salir...");
-            Console.ReadKey();
         }
 
+        // Ejecutar todas las pruebas secuencialmente y mostrar un resumen
         static void EjecutarTodasLasPruebas()
         {
             Console.WriteLine(" EJECUTANDO TODAS LAS PRUEBAS...\n");
@@ -132,43 +178,51 @@ namespace BancaEnLinea_PruebaAutomatizada
             int exitosas = 0;
             int fallidas = 0;
 
-            // Lista de pruebas a ejecutar
             var pruebas = new List<(string nombre, Action test)>
             {
-                ("Test 1", () => new Test01_Login().Ejecutar()),
-                ("Test 2", () => new Test02_AltaBeneficiario().Ejecutar()),
-                ("Test 3", () => new Test03_ValidacionCuentaInvalida().Ejecutar()),
-                ("Test 4", () => new Test04_TransferenciaValida().Ejecutar()),
-                ("Test 5", () => new Test05_TransferenciaLimiteDiario().Ejecutar()),
-                ("Test 6", () => new Test06_PagoServicio().Ejecutar()),
-                ("Test 7", () => new Test07_HistorialFiltros().Ejecutar()),
-                ("Test 8", () => new Test08_ExportacionCSV().Ejecutar()),
-                ("Test 9", () => new Test09_EdicionEliminacion().Ejecutar()),
-                ("Test 10", () => new Test10_Accesibilidad().Ejecutar())
+                // Agregar todas las pruebas aquí
+                ("Test 1: Login", () => new Test01_Login().Ejecutar()),
+                ("Test 2: Alta Beneficiario", () => new Test02_AltaBeneficiario().Ejecutar()),
+                ("Test 3: Cuenta Inválida", () => new Test03_ValidacionCuentaInvalida().Ejecutar()),
+                ("Test 4: Transferencia Válida", () => new Test04_TransferenciaValida().Ejecutar()),
+                ("Test 5: Límite Diario", () => new Test05_TransferenciaLimiteDiario().Ejecutar()),
+                ("Test 6: Pago Servicio", () => new Test06_PagoServicio().Ejecutar()),
+                ("Test 7: Historial Filtros", () => new Test07_HistorialFiltros().Ejecutar()),
+                ("Test 8: Exportación CSV", () => new Test08_ExportacionCSV().Ejecutar()),
+                ("Test 9: Edición/Eliminación", () => new Test09_EdicionEliminacion().Ejecutar()),
+                ("Test 10: Accesibilidad", () => new Test10_Accesibilidad().Ejecutar())
             };
 
+            // Ejecutar cada prueba y capturar resultados 
             foreach (var (nombre, test) in pruebas)
             {
+                Console.WriteLine($"\n  Ejecutando: {nombre}");
+                Console.WriteLine(new string('─', 60));
+
                 try
                 {
                     test();
                     exitosas++;
+                    Console.WriteLine($" {nombre}: EXITOSA");
                 }
-                catch
+                catch (Exception ex)
                 {
                     fallidas++;
+                    Console.WriteLine($" {nombre}: FALLIDA - {ex.Message}");
                 }
-                Console.WriteLine("\n" + new string('─', 60) + "\n");
+
+                Console.WriteLine(new string('─', 60));
             }
 
-            Console.WriteLine("\n╔════════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║                   RESUMEN DE PRUEBAS                       ║");
-            Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
+            // Mostrar resumen final  
+            Console.WriteLine("\n╔══════════════════════════════════════════════════════════════╗");
+            Console.WriteLine("  ║                   RESUMEN DE PRUEBAS                         ║");
+            Console.WriteLine("  ╚══════════════════════════════════════════════════════════════╝");
             Console.WriteLine();
-            Console.WriteLine($"  Total de pruebas: {pruebas.Count}");
-            Console.WriteLine($"  ✅ Exitosas: {exitosas}");
-            Console.WriteLine($"  ❌ Fallidas: {fallidas}");
-            Console.WriteLine($"  📊 Porcentaje de éxito: {(exitosas * 100.0 / pruebas.Count):F2}%");
+            Console.WriteLine($"   Total de pruebas: {pruebas.Count}");
+            Console.WriteLine($"   Exitosas: {exitosas}");
+            Console.WriteLine($"   Fallidas: {fallidas}");
+            Console.WriteLine($"   Porcentaje de éxito: {(exitosas * 100.0 / pruebas.Count):F2}%");
             Console.WriteLine();
         }
     }
