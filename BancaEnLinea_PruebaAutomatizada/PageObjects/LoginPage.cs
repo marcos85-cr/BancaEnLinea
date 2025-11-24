@@ -4,24 +4,24 @@ using OpenQA.Selenium.Support.UI;
 namespace BancaEnLinea_PruebaAutomatizada.PageObjects
 {
     public class LoginPage
-    {   // Actualizado
+    {
         private readonly IWebDriver driver;
         private readonly WebDriverWait wait;
 
-        // Localizadores - Actualizados
-        private By usernameInput = By.Id("username");  // Cambiado
-        private By passwordInput = By.Id("password");  // Cambiado
-        private By loginButton = By.XPath("//button[contains(text(), 'Ingresar')]");  
+        // localizadores de elementos
+        private By usernameInput = By.Name("username");
+        private By passwordInput = By.Name("password");
+        private By loginButton = By.CssSelector("button.btn-primary");
         private By errorMessage = By.CssSelector(".alert-danger");
 
-        // Constructor
+        // constructor
         public LoginPage(IWebDriver driver, WebDriverWait wait)
         {
             this.driver = driver;
             this.wait = wait;
         }
 
-        // Métodos de interacción - Actualizados
+        // métodos para interactuar con la página
         public void EnterUsername(string username)
         {
             wait.Until(d => d.FindElement(usernameInput));
@@ -30,7 +30,7 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
             element.SendKeys(username);
         }
 
-        // Métodos de interacción - Actualizados
+        // método para ingresar la contraseña
         public void EnterPassword(string password)
         {
             var element = driver.FindElement(passwordInput);
@@ -38,15 +38,14 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
             element.SendKeys(password);
         }
 
-        
+        // método para hacer clic en el botón de inicio de sesión
         public void ClickLogin()
         {
-            // Esperar hasta que el botón de login sea clickeable
             var button = wait.Until(d => d.FindElement(loginButton));
             button.Click();
         }
 
-        // Método para obtener el mensaje de error - Actualizado
+        // método para obtener el mensaje de error
         public string GetErrorMessage()
         {
             try

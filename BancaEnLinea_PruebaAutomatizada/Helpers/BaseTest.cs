@@ -8,16 +8,15 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
     {
         protected IWebDriver driver = null!;
         protected WebDriverWait wait = null!;
-        protected string baseUrl = "https://localhost:61156"; // ⚠️ Ajusta según tu puerto
+        protected string baseUrl = "https://localhost:61156";
 
-        // Configurar el navegador antes de cada prueba
         public virtual void SetUp()
         {
             Console.WriteLine(" Configurando Chrome WebDriver...");
 
             var options = new ChromeOptions();
 
-            // Argumentos para Chrome (optimización y seguridad)
+            // Argumentos para Chrome
             options.AddArgument("--start-maximized");
             options.AddArgument("--disable-extensions");
             options.AddArgument("--ignore-certificate-errors");
@@ -29,7 +28,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
             options.AddArgument("--remote-debugging-port=9222");
             options.AddArgument("--disable-blink-features=AutomationControlled");
 
-            // Aceptar certificados no seguros (crítico para HTTPS en desarrollo)
+            // Aceptar certificados no seguros
             options.AcceptInsecureCertificates = true;
 
             // Preferencias adicionales
@@ -40,6 +39,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
 
             try
             {
+                // Obtener ruta del ejecutable
                 var executingPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 Console.WriteLine($" Ruta de ejecución: {executingPath}");
 
@@ -47,6 +47,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
                 var service = ChromeDriverService.CreateDefaultService(executingPath);
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
+
                 // Iniciar ChromeDriver
                 driver = new ChromeDriver(service, options);
                 Console.WriteLine(" Chrome configurado correctamente");
@@ -57,7 +58,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
                 Console.WriteLine("Intentando método alternativo...");
 
                 try
-                {// Método alternativo para iniciar ChromeDriver
+                {
                     driver = new ChromeDriver(options);
                     Console.WriteLine(" Chrome configurado correctamente (método alternativo)");
                 }
@@ -69,30 +70,28 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
                     Console.WriteLine("1. Verifica que Google Chrome esté instalado");
                     Console.WriteLine("2. Actualiza Chrome a la última versión");
                     Console.WriteLine("3. Reinstala el paquete Selenium.WebDriver.ChromeDriver");
-                    Console.WriteLine("   dotnet remove package Selenium.WebDriver.ChromeDriver");
-                    Console.WriteLine("   dotnet add package Selenium.WebDriver.ChromeDriver");
                     throw;
                 }
             }
 
-            // Configurar timeouts
+            // Configurar timeouts y espera explícita
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
 
             Console.WriteLine($" URL base configurada: {baseUrl}");
 
-            // Pequeño delay para asegurar que Chrome esté listo
             Thread.Sleep(1000);
         }
 
-        // Limpiar después de cada prueba
+        // Método para cerrar el navegador y tomar screenshot
         public virtual void TearDown(string testName, bool passed)
         {
             if (driver != null)
             {
                 try
                 {
+                    // Tomar screenshot al finalizar
                     Console.WriteLine($" Tomando captura de pantalla: {testName}");
                     TakeScreenshot(testName, passed ? "PASS" : "FAIL");
                 }
@@ -103,6 +102,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
 
                 try
                 {
+                    // Cerrar el navegador
                     driver.Quit();
                     driver.Dispose();
                     Console.WriteLine(" Navegador cerrado");
@@ -114,7 +114,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
             }
         }
 
-        // Tomar captura de pantalla y guardarla en carpeta Screenshots
+        // Método para tomar screenshot
         protected void TakeScreenshot(string testName, string status)
         {
             try
@@ -125,7 +125,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
                     return;
                 }
 
-                // Tomar screenshot y guardarlo
+                // Tomar screenshot
                 var screenshot = ((ITakesScreenshot)driver).GetScreenshot();
                 string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
                 string fileName = $"{testName}_{status}_{timestamp}.png";
@@ -148,42 +148,39 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
             }
         }
 
-        // Método para hacer login en la aplicación
+        // Método para iniciar sesión en la aplicación
         protected void Login(string username = "alumno1", string password = "P@ssw0rd!")
         {
             Console.WriteLine($" Iniciando sesión como: {username}");
 
-            // Pequeño delay para asegurar que Chrome esté listo
             Thread.Sleep(2000);
 
             try
             {
-                // Navegar a la página de login
                 Console.WriteLine($" Navegando a: {baseUrl}/Account/Login");
                 driver.Navigate().GoToUrl($"{baseUrl}/Account/Login");
 
-                // Esperar a que la página cargue completamente
-                wait.Until(d => d.FindElement(By.Id("username")));
+                // Esperar a que cargue el campo de usuario  
+                wait.Until(d => d.FindElement(By.Name("username")));
 
-                Console.WriteLine("  Ingresando credenciales...");
+                Console.WriteLine("✏️  Ingresando credenciales...");
 
-                // Rellenar campos de usuario y contraseña
-                var usernameField = driver.FindElement(By.Id("username"));
+                // Ingresar usuario 
+                var usernameField = driver.FindElement(By.Name("username"));
                 usernameField.Clear();
                 usernameField.SendKeys(username);
 
-                // Rellenar campo de contraseña
-                var passwordField = driver.FindElement(By.Id("password"));
+                // Ingresar contraseña 
+                var passwordField = driver.FindElement(By.Name("password"));
                 passwordField.Clear();
                 passwordField.SendKeys(password);
 
                 Console.WriteLine("  Haciendo click en Login...");
 
-                // Buscar el botón por texto y hacer click
-                var loginButton = driver.FindElement(By.XPath("//button[contains(text(), 'Ingresar')]"));
+                // Hacer click en el botón de login
+                var loginButton = driver.FindElement(By.CssSelector("button.btn-primary"));
                 loginButton.Click();
 
-                // Esperar redirección al Dashboard o Accounts
                 Console.WriteLine(" Esperando redirección...");
                 wait.Until(d => d.Url.Contains("Dashboard") || d.Url.Contains("Accounts"));
 
@@ -191,7 +188,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
             }
             catch (WebDriverTimeoutException ex)
             {
-                // Timeout esperando elementos o redirección
+                // Timeout esperando elementos
                 Console.WriteLine($" Timeout al intentar hacer login: {ex.Message}");
                 Console.WriteLine($"URL actual: {driver.Url}");
                 throw new Exception("No se pudo completar el login. Verifica que la aplicación esté corriendo.");
@@ -201,15 +198,13 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
                 Console.WriteLine($" No se encontró elemento en la página: {ex.Message}");
                 Console.WriteLine($"URL actual: {driver.Url}");
 
-                // Mostrar qué elementos SÍ existen
                 try
                 {
-                    // Inputs
                     var allButtons = driver.FindElements(By.TagName("button"));
                     Console.WriteLine($"Botones encontrados: {allButtons.Count}");
                     foreach (var btn in allButtons)
                     {
-                        Console.WriteLine($"  - Texto: '{btn.Text}', Type: '{btn.GetAttribute("type")}'");
+                        Console.WriteLine($"  - Texto: '{btn.Text}', Type: '{btn.GetAttribute("type")}', Class: '{btn.GetAttribute("class")}'");
                     }
                 }
                 catch { }
@@ -224,7 +219,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
             }
         }
 
-        // Método auxiliar para esperar a que un elemento esté visible
+        // Método para esperar un elemento
         protected IWebElement WaitForElement(By locator, int timeoutInSeconds = 10)
         {
             try
@@ -242,7 +237,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
             }
         }
 
-        // Método auxiliar para hacer click seguro
+        // Método para hacer click seguro
         protected void SafeClick(By locator)
         {
             try
@@ -258,7 +253,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
             }
         }
 
-        // Método para verificar si la aplicación está corriendo
+        // Método para verificar conexión a la aplicación
         protected bool VerificarConexion()
         {
             try
@@ -287,14 +282,13 @@ namespace BancaEnLinea_PruebaAutomatizada.Helpers
             }
         }
 
-        // Método para scroll a un elemento específico
+        // Método para hacer scroll a un elemento
         protected void ScrollToElement(IWebElement element)
         {
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
             Thread.Sleep(500);
         }
 
-        // Método para esperar y hacer click en un elemento
         protected void WaitAndClick(By locator, int timeoutInSeconds = 10)
         {
             var element = WaitForElement(locator, timeoutInSeconds);
