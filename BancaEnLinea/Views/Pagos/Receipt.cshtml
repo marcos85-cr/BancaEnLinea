@@ -1,0 +1,13 @@
+@model string
+@{
+    var id = Model;
+}
+<h2>Comprobante de Pago (Simulado)</h2>
+<div class="card">
+  <div class="card-body">
+    <p><strong>ID de operación:</strong> @id</p>
+    <p><strong>Fecha:</strong> @DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")</p>
+    <p><strong>Detalle:</strong> Pago registrado en el sistema de ejemplo.</p>
+    <a class="btn btn-secondary" href="/Dashboard">Volver</a>
+  </div>
+</div>

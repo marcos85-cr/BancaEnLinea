@@ -1,0 +1,27 @@
+@model IEnumerable<BancaEnLinea.Models.Beneficiario>
+@{
+    var msg = TempData["msg"] as string;
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Beneficiarios</h2>
+  <a class="btn btn-primary" href="/Beneficiarios/Create">Agregar</a>
+</div>
+@if (!string.IsNullOrWhiteSpace(msg)) {
+  <div class="alert alert-success">@msg</div>
+}
+<table class="table table-bordered">
+  <thead><tr><th>Alias</th><th>Banco</th><th>Cuenta</th><th style="width:160px"></th></tr></thead>
+  <tbody>
+@foreach (var b in Model) {
+  <tr>
+    <td>@b.Alias</td><td>@b.Banco</td><td>@b.NumeroCuenta</td>
+    <td>
+      <a class="btn btn-sm btn-outline-secondary" href="/Beneficiarios/Edit/@b.Id">Editar</a>
+      <form method="post" action="/Beneficiarios/Delete/@b.Id" style="display:inline">
+        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar?')">Eliminar</button>
+      </form>
+    </td>
+  </tr>
+}
+  </tbody>
+</table>

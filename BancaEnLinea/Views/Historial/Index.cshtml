@@ -1,0 +1,43 @@
+@model IEnumerable<BancaEnLinea.Models.Movimiento>
+@{
+    DateTime? desde = null;
+    DateTime? hasta = null;
+    string? tipo = null;
+}
+<h2>Historial</h2>
+<form class="row row-cols-lg-auto g-3 align-items-end mb-3" method="get">
+  <div class="col-12">
+    <label class="form-label">Desde</label>
+    <input name="desde" type="date" class="form-control"/>
+  </div>
+  <div class="col-12">
+    <label class="form-label">Hasta</label>
+    <input name="hasta" type="date" class="form-control"/>
+  </div>
+  <div class="col-12">
+    <label class="form-label">Tipo</label>
+    <select name="tipo" class="form-select">
+      <option value="">Todos</option>
+      <option>Transferencia</option>
+      <option>Pago</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary">Filtrar</button>
+    <a class="btn btn-outline-secondary" href="/Historial/Export">Exportar CSV</a>
+  </div>
+</form>
+
+<table class="table table-striped">
+  <thead><tr><th>Fecha</th><th>Tipo</th><th>Descripción</th><th class="text-end">Monto</th></tr></thead>
+  <tbody>
+@foreach (var m in Model) {
+  <tr>
+    <td>@m.Fecha.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+    <td>@m.Tipo</td>
+    <td>@m.Descripcion</td>
+    <td class="text-end">₡ @m.Monto.ToString("N2")</td>
+  </tr>
+}
+  </tbody>
+</table>

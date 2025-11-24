@@ -1,0 +1,27 @@
+@model IEnumerable<BancaEnLinea.Models.Account>
+@{
+    ViewData["Title"] = "Dashboard";
+    var msg = TempData["msg"] as string;
+    var fullName = ViewBag.FullName as string;
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Dashboard</h2>
+  <div class="text-muted">@(string.IsNullOrWhiteSpace(fullName) ? "" : fullName)</div>
+</div>
+@if (!string.IsNullOrWhiteSpace(msg)) {
+  <div class="alert alert-success">@msg</div>
+}
+<div class="row">
+@foreach (var c in Model) {
+  <div class="col-md-6 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">@c.Name</h5>
+        <p class="card-text fs-4">₡ @c.Balance.ToString("N2")</p>
+        <a class="btn btn-sm btn-outline-primary" href="/Transferencias/Create">Transferir</a>
+        <a class="btn btn-sm btn-outline-secondary" href="/Pagos/Create">Pagar</a>
+      </div>
+    </div>
+  </div>
+}
+</div>

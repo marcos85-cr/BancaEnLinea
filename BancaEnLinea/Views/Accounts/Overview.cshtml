@@ -1,0 +1,10 @@
+@model IEnumerable<BancaEnLinea.Models.Account>
+<h2>Cuentas</h2>
+<table class="table table-striped">
+  <thead><tr><th>Cuenta</th><th class="text-end">Saldo</th></tr></thead>
+  <tbody>
+@foreach (var c in Model) {
+  <tr><td>@c.Name</td><td class="text-end">₡ @c.Balance.ToString("N2")</td></tr>
+}
+  </tbody>
+</table>
