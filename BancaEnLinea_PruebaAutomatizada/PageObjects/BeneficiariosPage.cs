@@ -13,7 +13,7 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
         private By aliasInput = By.Name("alias");
         private By bancoInput = By.Name("banco");
         private By numeroCuentaInput = By.Name("numeroCuenta");
-        private By saveButton = By.CssSelector("button[type='submit']");
+        private By saveButton = By.CssSelector("button.btn-primary");
         private By errorMessage = By.CssSelector(".alert-danger");
         private By successMessage = By.CssSelector(".alert-success");
         private By tableRows = By.CssSelector("tbody tr");
@@ -52,6 +52,7 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
         //hace clic en el botón guardar para agregar o editar un beneficiario
         public void ClickSave()
         {
+            wait.Until(d => d.FindElement(saveButton));
             driver.FindElement(saveButton).Click();
         }
 

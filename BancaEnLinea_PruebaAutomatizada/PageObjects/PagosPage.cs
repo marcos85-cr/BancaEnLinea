@@ -12,7 +12,7 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
         private By servicioInput = By.Name("servicio");
         private By referenciaInput = By.Name("referencia");
         private By montoInput = By.Name("monto");
-        private By pagarButton = By.CssSelector("button[type='submit']");
+        private By pagarButton = By.CssSelector("button.btn-primary");
 
         // Constructor que inicializa el controlador web y la espera explícita
         public PagosPage(IWebDriver driver, WebDriverWait wait)

@@ -11,7 +11,7 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
         private By cuentaOrigenSelect = By.Name("cuentaOrigenId");
         private By cuentaDestinoSelect = By.Name("cuentaDestinoId");
         private By montoInput = By.Name("monto");
-        private By transferButton = By.CssSelector("button[type='submit']");
+        private By transferButton = By.CssSelector("button.btn-primary");
         private By errorMessage = By.CssSelector(".alert-danger");
 
         // Constructor que inicializa el controlador web y la espera explícita
