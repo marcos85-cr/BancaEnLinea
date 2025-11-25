@@ -77,6 +77,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                     Console.WriteLine("\n Verificando contenido de las filas:");
                     var rowTypes = historialPage.GetRowTypes();
 
+                    // Mostrar los primeros 5 tipos encontrados
                     for (int i = 0; i < rowTypes.Count && i < 5; i++)
                     {
                         Console.WriteLine($"   Fila {i + 1}: Tipo = '{rowTypes[i]}'");
