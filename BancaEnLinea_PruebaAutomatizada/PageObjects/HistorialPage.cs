@@ -70,5 +70,23 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
                 return cells.Count > 1 ? cells[1].Text : "";
             }).ToList();
         }
+        // Métodos para ingresar fechas en los campos Desde y Hasta
+        public void EnterDesde(string fecha)
+        {
+            wait.Until(d => d.FindElement(desdeInput));
+            var input = driver.FindElement(desdeInput);
+            input.Clear();
+            input.SendKeys(fecha);
+        }
+
+        // Método para ingresar fecha en el campo Hasta
+        public void EnterHasta(string fecha)
+        {
+            var input = driver.FindElement(hastaInput);
+            input.Clear();
+            input.SendKeys(fecha);
+        }
+
+
     }
 }
