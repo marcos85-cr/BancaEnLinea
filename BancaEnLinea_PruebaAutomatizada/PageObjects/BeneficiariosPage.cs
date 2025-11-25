@@ -123,5 +123,39 @@ namespace BancaEnLinea_PruebaAutomatizada.PageObjects
                 return 0;
             }
         }
+
+
+        public bool IsFirstInTable(string alias)
+        {
+            try
+            {
+                wait.Until(d => d.FindElements(tableRows).Count > 0);
+
+                // Obtener la primera fila
+                var primeraFila = driver.FindElement(By.CssSelector("tbody tr:first-child"));
+
+                // Verificar si contiene el alias
+                return primeraFila.Text.Contains(alias);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public string GetFirstRowText()
+        {
+            try
+            {
+                var primeraFila = driver.FindElement(By.CssSelector("tbody tr:first-child"));
+                return primeraFila.Text;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+
     }
 }
