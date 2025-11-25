@@ -26,7 +26,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                 driver.Navigate().GoToUrl($"{baseUrl}/Account/Login");
 
                 // Verificación de la URL
-                Console.WriteLine("✏️  Ingresando credenciales...");
+                Console.WriteLine("  Ingresando credenciales...");
                 loginPage.EnterUsername("alumno1");
                 loginPage.EnterPassword("P@ssw0rd!");
                 loginPage.ClickLogin();
@@ -45,7 +45,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                     throw new Exception(" No se redirigió al Dashboard");
                 }
 
-                if (!welcomeMessage.Contains("Alumno Demo"))
+                if (!welcomeMessage.Contains("Alumno1"))
                 {
                     throw new Exception(" El nombre de usuario no aparece correctamente");
                 }

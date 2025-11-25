@@ -161,11 +161,11 @@ namespace BancaEnLinea_PruebaAutomatizada
                     EjecutarTodasLasPruebas();
                     break;
                 case "0":
-                    Console.WriteLine("👋 ¡Hasta luego!");
+                    Console.WriteLine(" ¡Hasta luego!");
                     Environment.Exit(0);
                     break;
                 default:
-                    Console.WriteLine("❌ Opción inválida");
+                    Console.WriteLine(" Opción inválida");
                     break;
             }
         }

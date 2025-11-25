@@ -21,7 +21,7 @@ public class InMemoryStore
         {
             Username = "alumno1",
             Password = "P@ssw0rd!",
-            FullName = "Alumno Demo"
+            FullName = "Alumno1"
         });
 
         Accounts.Add(new Account { Name = "Cuenta A", Balance = 500000m, OwnerUsername = "alumno1" });
