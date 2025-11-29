@@ -30,25 +30,25 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                 Console.WriteLine($"   Banco: {banco}");
                 Console.WriteLine($"   Cuenta: {numeroCuenta}");
 
-                // Navegar a la página de Beneficiarios
+                
                 driver.Navigate().GoToUrl($"{baseUrl}/Beneficiarios");
 
                 Console.WriteLine("\n Verificando estado inicial...");
                 int cantidadInicial = beneficiariosPage.GetBeneficiariosCount();
                 Console.WriteLine($"   Beneficiarios existentes: {cantidadInicial}");
 
-                //  ACCIÓN: Completar formulario
+                // Completa formulario
                 Console.WriteLine("\n Agregando nuevo beneficiario...");
                 beneficiariosPage.ClickAddBeneficiario();
 
                 Console.WriteLine("  Llenando formulario...");
                 beneficiariosPage.FillBeneficiarioForm(alias, banco, numeroCuenta);
 
-                // ACCIÓN: Guardar
+                
                 Console.WriteLine(" Guardando...");
                 beneficiariosPage.ClickSave();
 
-                // Esperar redirección
+                // Espera redirección
                 wait.Until(d => d.Url.Contains("/Beneficiarios") && !d.Url.Contains("Create"));
                 Thread.Sleep(1000);
 
@@ -92,7 +92,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                     Console.WriteLine(" Beneficiario aparece en la PRIMERA FILA");
                 }
 
-                // Cantidad aumentó en 1
+               
                 int cantidadFinal = beneficiariosPage.GetBeneficiariosCount();
                 Console.WriteLine($"\n Cantidad final: {cantidadFinal}");
 
