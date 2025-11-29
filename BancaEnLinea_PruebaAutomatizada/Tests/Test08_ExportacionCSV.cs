@@ -128,7 +128,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                         throw new Exception($" Nombre de archivo incorrecto: {nombreArchivo}");
                     }
 
-                    Console.WriteLine($"✓ Nombre de archivo correcto: {nombreArchivo}");
+                    Console.WriteLine($" Nombre de archivo correcto: {nombreArchivo}");
 
                     // Verificar formato de timestamp en el nombre
                     string timestamp = nombreArchivo.Replace("historial_", "").Replace(".csv", "");
@@ -210,8 +210,8 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
 
                         if (urlFunciona)
                         {
-                            Console.WriteLine("✓ URL de exportación es válida");
-                            Console.WriteLine("✓ La funcionalidad de exportación existe");
+                            Console.WriteLine(" URL de exportación es válida");
+                            Console.WriteLine(" La funcionalidad de exportación existe");
                             descargaExitosa = true;
                         }
                     }

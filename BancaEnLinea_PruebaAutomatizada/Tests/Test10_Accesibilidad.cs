@@ -183,7 +183,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                 Console.WriteLine("   3. Número de Cuenta");
                 Console.WriteLine("   4. Botón Guardar");
 
-                Console.WriteLine("\n✓ Verificaciones de accesibilidad:");
+                Console.WriteLine("\n Verificaciones de accesibilidad:");
                 Console.WriteLine($"    Labels encontrados: {labels.Count}");
                 Console.WriteLine($"    Inputs con clase form-control: {inputs.Count}");
                 Console.WriteLine($"    Tab: Alias → Banco: {(tabABanco ? "✓" : "✗")}");

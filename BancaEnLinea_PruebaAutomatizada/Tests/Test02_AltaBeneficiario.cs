@@ -105,12 +105,12 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                 Console.WriteLine("\n PRUEBA 2: EXITOSA");
                 Console.WriteLine("════════════════════════════════════════════════════════");
                 Console.WriteLine("Resultado esperado:");
-                Console.WriteLine("  ✓ Formulario completado y guardado");
-                Console.WriteLine("  ✓ Mensaje de éxito mostrado");
-                Console.WriteLine("  ✓ Beneficiario aparece en la grilla");
+                Console.WriteLine("  Formulario completado y guardado");
+                Console.WriteLine("  Mensaje de éxito mostrado");
+                Console.WriteLine("  Beneficiario aparece en la grilla");
                 if (estaEnPrimeraFila)
                 {
-                    Console.WriteLine("  ✓ Beneficiario en primera fila");
+                    Console.WriteLine("  Beneficiario en primera fila");
                 }
                 else
                 {

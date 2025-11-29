@@ -35,7 +35,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                 driver.Navigate().GoToUrl($"{baseUrl}/Pagos/Create");
                 Thread.Sleep(1000);
 
-                Console.WriteLine("\n✏️  Completando formulario de pago...");
+                Console.WriteLine("\n  Completando formulario de pago...");
                 pagosPage.SelectCuentaOrigen(0);
                 pagosPage.EnterServicio(servicio);
                 pagosPage.EnterReferencia(referencia);

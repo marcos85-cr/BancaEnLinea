@@ -121,7 +121,7 @@ namespace BancaEnLinea_PruebaAutomatizada.Tests
                 {
                     throw new Exception(" El saldo destino no cambió visualmente");
                 }
-                Console.WriteLine("✓ Saldos actualizados visualmente");
+                Console.WriteLine(" Saldos actualizados visualmente");
 
                 Console.WriteLine("\n PRUEBA 4: EXITOSA");
                 Console.WriteLine("════════════════════════════════════════════════════════════════════");
